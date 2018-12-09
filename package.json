@@ -25,6 +25,11 @@
   },
   "homepage": "https://github.com/natalino-cordeiro/paper_buddy#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "formidable": "^1.2.1",
+    "jshint": "^2.9.7",
+    "pdf-text-extract": "^1.5.0"
   }
 }
