@@ -1,7 +1,7 @@
 class PrefixTreeNode {
     constructor(value) {
         this.children = {};
-        this.endWord = null;
+        this.endWord = false;
         this.endWordCount = 0;
         this.value = value;
     }
@@ -19,28 +19,30 @@ class PrefixTree extends PrefixTreeNode {
         super(null);
     }
 
-    addWord(string) {
-        const addWordHelper = (node, str) => {
-            if (!node.children[str[0]]) {
-                node.children[str[0]] = new PrefixTreeNode(str[0]);
-            }
-            if (str.length === 1) {
+    addWord(str) {
+        var node = this;
 
-                node.children[str[0]].endWord = 1;
-                node.children[str[0]].endWordCount++;
+        console.log(str);
+        for (var i = 0; i < str.length; i++) {
+            
+            //create the node if it doesn't exist already
+            if (!node.children[str[i]]) {
+                node.children[str[i]] = new PrefixTreeNode(str[i]);
             }
-            else {
-                if (str[1] === " ") {
-                    node.children[str[0]].endWord = 1;
-                    node.children[str[0]].endWordCount++;
-                    addWordHelper(node.children[str[0]], str.slice(1));
-                }
-                else {
-                    addWordHelper(node.children[str[0]], str.slice(1));
-                }
+
+            // signal end of word or move on
+            if (str.length === i + 1) {
+                node.children[str[i]].endWord = true;
+                node.children[str[i]].endWordCount++;
             }
-        };
-        addWordHelper(this, string);
+            else if (str[i + 1] === " ") {
+                    node.children[str[i]].endWord = true;
+                    node.children[str[i]].endWordCount++;
+                }
+
+            // set the 'current' node
+            node = node.children[str[i]];
+        }
     }
 
     predictWord(string) {
@@ -52,9 +54,9 @@ class PrefixTree extends PrefixTreeNode {
             }
             return node;
         };
-    
+
         var allWords = [];
-    
+
         var allWordsHelper = function (stringSoFar, tree) {
             for (let k in tree.children) {
                 const child = tree.children[k];
@@ -65,15 +67,15 @@ class PrefixTree extends PrefixTreeNode {
                 allWordsHelper(newString, child);
             }
         };
-    
+
         var remainingTree = getRemainingTree(string, this);
         if (remainingTree) {
             allWordsHelper(string, remainingTree);
         }
-    
+
         return allWords;
     }
-        
+
     logAllWords() {
         console.log('------ ALL WORDS IN PREFIX TREE -----------');
         console.log(this.predictWord(''));

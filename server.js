@@ -25,10 +25,10 @@ function loadNGramsToTree(str, n){
 
       // for n=3, this load the first 2 words...
       for(var j = i-n; j < n-1; j++){
-        tempStr += str[j] + " ";
+        tempStr += words[j] + " ";
       }
       //...and the last one is added after the cycle, without using the space
-      tempStr += str[i-1]; 
+      tempStr += words[i-1]; 
       
       // add the 'n-gram' to the tree
       tree.addWord(tempStr);
@@ -74,11 +74,13 @@ app.post('/fileupload', function (req, res) {
           text = text.replace(/\s\s+/g, " ");
           
           //split text by divider chars .!?:;
-          let filteredText = text.split(/[.!?]/g);
+          let filteredText = text.split(/[.!?:;]/g);
 
           for (var j = 0; j < filteredText.length; j++) {
-            // We also need to remove any white spaces left at the start of each string
-            loadNGramsToTree(filteredText[j].replace(/^\s+|\s+$/g, ''));
+            //We also need to remove any white spaces left at the start of each string
+            //Load phrase to the tree as a 3-gram
+            let aux = filteredText[j].replace(/^\s+|\s+$/g, '');
+            loadNGramsToTree(aux, 3);
           }
         }
         
