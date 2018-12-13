@@ -21,8 +21,7 @@ class PrefixTree extends PrefixTreeNode {
 
     addWord(str) {
         var node = this;
-
-        console.log(str);
+        
         for (var i = 0; i < str.length; i++) {
             
             //create the node if it doesn't exist already
@@ -81,8 +80,6 @@ class PrefixTree extends PrefixTreeNode {
         console.log(this.predictWord(''));
     }
 }
-
-
 
 module.exports = {
     PrefixTree: PrefixTree
